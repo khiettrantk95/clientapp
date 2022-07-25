@@ -60,7 +60,7 @@ const MessageBox = ({ messages, connectedTo, message, setMessage, sendMsg, name 
                     type="text"
                     value={message}
                     onChange={e => setMessage(e.target.value)}
-                    onKeyDown={this.handleKeyDown}
+                    onKeyDown={handleKeyDown}
                     placeholder="Type message"
                     action
                 >
