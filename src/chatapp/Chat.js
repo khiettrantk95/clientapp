@@ -15,7 +15,7 @@ import UsersList from "./UsersList";
 import MessageBox from "./MessageBox";
 // Use for remote connections
 const configuration = {
-  iceServers: [{ url: "stun:stun.1.google.com:19302" }]
+  'iceServers': [{ 'url': 'stun:stun.1.google.com:19302' }]
 };
 // Use for local connections
 // const configuration = null;
@@ -35,9 +35,11 @@ const Chat = ({ connection, updateConnection, channel, updateChannel }) => {
   const messagesRef = useRef({});
   const [messages, setMessages] = useState({});
   useEffect(() => {
-    // webSocket.current = new WebSocket("wss://signalingapp.herokuapp.com");
-    webSocket.current = new WebSocket("ws://localhost:9000");
+    console.log('initialize connection');
+    webSocket.current = new WebSocket("wss://signalingapp.herokuapp.com");
+    // webSocket.current = new WebSocket("ws://localhost:9000");
     webSocket.current.onmessage = message => {
+      console.log('onmessage');
       const data = JSON.parse(message.data);
       setSocketMessages(prev => [...prev, data]);
     };
@@ -129,6 +131,7 @@ const Chat = ({ connection, updateConnection, channel, updateChannel }) => {
       let localConnection = new RTCPeerConnection(configuration);
       //when the browser finds an ice candidate we send it to another peer
       localConnection.onicecandidate = ({ candidate }) => {
+        console.log('onicecandidate');
         let connectedTo = connectedRef.current;
         if (candidate && !!connectedTo) {
           send({
@@ -164,6 +167,7 @@ const Chat = ({ connection, updateConnection, channel, updateChannel }) => {
   };
   //when somebody wants to message us
   const onOffer = ({ offer, name }) => {
+    console.log('onOffer: ', offer)
     setConnectedTo(name);
     connectedRef.current = name;
     connection
