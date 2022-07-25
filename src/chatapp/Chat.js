@@ -141,6 +141,7 @@ const Chat = ({ connection, updateConnection, channel, updateChannel }) => {
       localConnection.onicecandidate = ({ candidate }) => {
         console.log('onicecandidate: ', candidate);
         let connectedTo = connectedRef.current;
+        console.log('connect to: ', connectedTo);
         if (candidate && !!connectedTo) {
           send({
             name: connectedTo,
@@ -149,6 +150,7 @@ const Chat = ({ connection, updateConnection, channel, updateChannel }) => {
           });
         }
       };
+      
       localConnection.ondatachannel = event => {
         console.log('ondatachannel: ', event);
         let receiveChannel = event.channel;
