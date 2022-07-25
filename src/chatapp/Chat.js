@@ -39,7 +39,7 @@ const Chat = ({ connection, updateConnection, channel, updateChannel }) => {
     webSocket.current = new WebSocket("wss://signalingapp.herokuapp.com");
     // webSocket.current = new WebSocket("ws://localhost:9000");
     webSocket.current.onmessage = message => {
-      console.log('onmessage');
+      console.log('onmessage: ', message);
       const data = JSON.parse(message.data);
       setSocketMessages(prev => [...prev, data]);
     };
