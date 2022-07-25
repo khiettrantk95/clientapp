@@ -139,7 +139,7 @@ const Chat = ({ connection, updateConnection, channel, updateChannel }) => {
       let localConnection = new RTCPeerConnection(configuration);
       //when the browser finds an ice candidate we send it to another peer
       localConnection.onicecandidate = ({ candidate }) => {
-        console.log('onicecandidate');
+        console.log('onicecandidate: ', candidate);
         let connectedTo = connectedRef.current;
         if (candidate && !!connectedTo) {
           send({
