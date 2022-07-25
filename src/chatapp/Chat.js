@@ -34,6 +34,7 @@ const Chat = ({ connection, updateConnection, channel, updateChannel }) => {
   const [message, setMessage] = useState("");
   const messagesRef = useRef({});
   const [messages, setMessages] = useState({});
+
   useEffect(() => {
     console.log('initialize connection');
     webSocket.current = new WebSocket("wss://signalingapp.herokuapp.com");
@@ -48,6 +49,7 @@ const Chat = ({ connection, updateConnection, channel, updateChannel }) => {
     };
     return () => webSocket.current.close();
   }, []);
+
   useEffect(() => {
     let data = socketMessages.pop();
     if (data) {
@@ -81,9 +83,11 @@ const Chat = ({ connection, updateConnection, channel, updateChannel }) => {
   const closeAlert = () => {
     setAlert(null);
   };
+
   const send = data => {
     webSocket.current.send(JSON.stringify(data));
   };
+
   const handleLogin = () => {
     setLoggingIn(true);
     send({
@@ -91,12 +95,15 @@ const Chat = ({ connection, updateConnection, channel, updateChannel }) => {
       name
     });
   };
+
   const updateUsersList = ({ user }) => {
     setUsers(prev => [...prev, user]);
   };
+
   const removeUser = ({ user }) => {
     setUsers(prev => prev.filter(u => u.userName !== user.userName));
   }
+
   const handleDataChannelMessageReceived = ({ data }) => {
     const message = JSON.parse(data);
     const { name: user } = message;
@@ -113,6 +120,7 @@ const Chat = ({ connection, updateConnection, channel, updateChannel }) => {
       setMessages(newMessages);
     }
   };
+
   const onLogin = ({ success, message, users: loggedIn }) => {
     setLoggingIn(false);
     if (success) {
@@ -165,6 +173,7 @@ const Chat = ({ connection, updateConnection, channel, updateChannel }) => {
       );
     }
   };
+
   //when somebody wants to message us
   const onOffer = ({ offer, name }) => {
     console.log('onOffer: ', offer)
@@ -192,14 +201,23 @@ const Chat = ({ connection, updateConnection, channel, updateChannel }) => {
         );
       });
   };
+
   //when another user answers to our offer
   const onAnswer = ({ answer }) => {
+    console.log('answer: ', answer);
+    console.log( 'connection before answered: ', connection);
     connection.setRemoteDescription(new RTCSessionDescription(answer));
+    console.log( 'connection after answered: ', connection);
   };
+
   //when we got ice candidate from another user
   const onCandidate = ({ candidate }) => {
+    console.log('candidate: ', candidate);
+    console.log( 'connection before iced: ', connection);
     connection.addIceCandidate(new RTCIceCandidate(candidate));
+    console.log( 'connection after iced: ', connection);
   };
+
   //when a user clicks the send message button
   const sendMsg = () => {
     const time = format(new Date(), "yyyy-MM-dd'T'HH:mm:ss.SSSxxx");

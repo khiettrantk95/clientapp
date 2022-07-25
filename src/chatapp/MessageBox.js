@@ -13,6 +13,13 @@ import {
 import { formatRelative } from "date-fns";
 //import avatar from "./avatar.png";
 const MessageBox = ({ messages, connectedTo, message, setMessage, sendMsg, name }) => {
+    
+    const handleKeyDown = (event) => {
+        if (event.key === 'Enter') {
+            sendMsg();
+        }
+    }
+    
     return (
         <Grid.Column width={11}>
         <Sticky>
@@ -43,21 +50,26 @@ const MessageBox = ({ messages, connectedTo, message, setMessage, sendMsg, name 
                 ) : (
                 <Segment placeholder>
                     <Header icon>
-                    <Icon name="discussions" />
-                    No messages available yet
+                        <Icon name="discussions" />
+                        No messages available yet
                     </Header>
                 </Segment>
                 )}
                 <Input
-                fluid
-                type="text"
-                value={message}
-                onChange={e => setMessage(e.target.value)}
-                placeholder="Type message"
-                action
+                    fluid
+                    type="text"
+                    value={message}
+                    onChange={e => setMessage(e.target.value)}
+                    onKeyDown={this.handleKeyDown}
+                    placeholder="Type message"
+                    action
                 >
                 <input />
-                <Button color="teal" disabled={!message} onClick={sendMsg}>
+                <Button
+                    color="teal"
+                    disabled={!message}
+                    onClick={sendMsg}
+                >
                     <Icon name="send" />
                     Send Message
                 </Button>
