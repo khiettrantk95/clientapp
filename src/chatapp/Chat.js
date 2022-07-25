@@ -35,7 +35,8 @@ const Chat = ({ connection, updateConnection, channel, updateChannel }) => {
   const messagesRef = useRef({});
   const [messages, setMessages] = useState({});
   useEffect(() => {
-    webSocket.current = new WebSocket("wss://signalingapp.herokuapp.com");
+    // webSocket.current = new WebSocket("wss://signalingapp.herokuapp.com");
+    webSocket.current = new WebSocket("ws://localhost:9000");
     webSocket.current.onmessage = message => {
       const data = JSON.parse(message.data);
       setSocketMessages(prev => [...prev, data]);
@@ -138,6 +139,7 @@ const Chat = ({ connection, updateConnection, channel, updateChannel }) => {
         }
       };
       localConnection.ondatachannel = event => {
+        console.log('ondatachannel: ', event);
         let receiveChannel = event.channel;
         receiveChannel.onopen = () => {
           console.log("Data channel is open and ready to be used.");
