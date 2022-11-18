@@ -5,15 +5,16 @@ import images from "./Images";
 import TextCircle from "./TextCircle";
 
 const videos = [
-    'https://www.youtube.com/watch?v=oB2vlGfk5bE',
-    'https://www.youtube.com/shorts/loY5-1Qm3aw',
-    'https://www.youtube.com/watch?v=oB2vlGfk5bE',
-    'https://www.youtube.com/watch?v=oB2vlGfk5bE',
-    'https://www.youtube.com/watch?v=oB2vlGfk5bE',
-    'https://www.youtube.com/watch?v=oB2vlGfk5bE',
-    'https://www.youtube.com/watch?v=oB2vlGfk5bE',
-    'https://www.youtube.com/watch?v=oB2vlGfk5bE',
-    'https://www.youtube.com/watch?v=oB2vlGfk5bE'
+    'https://www.youtube.com/shorts/oz3qL5g1i0Y',
+    'https://www.youtube.com/shorts/cVrRK1IRkQU',
+    'https://www.youtube.com/shorts/pS08B3B9S8g',
+    'https://www.youtube.com/shorts/lJlQYet8QT8',
+    'https://www.youtube.com/shorts/GVNjdycmdHk',
+    'https://www.youtube.com/shorts/eOR-BbA_6Ak',
+    'https://www.youtube.com/shorts/2000jLe8AAQ',
+    'https://www.youtube.com/shorts/_WyvgSCn4GQ',
+    'https://www.youtube.com/shorts/tDdbMo37erA',
+    'https://www.youtube.com/shorts/oNJiDtUNtFQ'
 ];
 
 const CircleEle = () => {
@@ -21,6 +22,7 @@ const CircleEle = () => {
     const [selectedNumber, setSelectedNumber] = useState(-1);
     const [playedVideoCount, setPlayedVideoCount] = useState(0);
     const [playedVideoNumbers, setPlayedVideoNumbers] = useState([]);
+    const [isLastVideoPlayed, setIsLastVideoPlayed] = useState(false);
 
     const handleMouseMove = useCallback((event) => {
         let x = event.clientX/2;
@@ -28,6 +30,10 @@ const CircleEle = () => {
         let slider = document.getElementsByClassName('slider');
         slider[0].style.transform = 'perspective(1000px) rotateY('+x+'deg) rotateZ(-'+y+'deg)';
     });
+
+    const onEndedPlayFinal = () => {
+        setIsLastVideoPlayed(true);
+    };
 
     const onEndedPlay = () => {
         if (!playedVideoNumbers.includes(selectedNumber)) {
@@ -49,7 +55,6 @@ const CircleEle = () => {
         else 
         {
             setIsPressed(false);
-            // todo: make remove work - root cause: not same function
             window.removeEventListener('mousemove', handleMouseMove);
         }  
     };
@@ -60,8 +65,20 @@ const CircleEle = () => {
 
     return (
         <div>
+            {(!isLastVideoPlayed && playedVideoCount>=9) && 
             <div className="main-screen-player">
-                {selectedNumber !== -1 && 
+                <ReactPlayer 
+                    key={9}
+                    url={videos[9]}
+                    width='100%'
+                    height='100%'
+                    light={images[9]}
+                    controls={true}
+                    onEnded={onEndedPlayFinal}
+                />
+            </div>}
+            {selectedNumber !== -1 && 
+            <div className="main-screen-player">
                 <ReactPlayer 
                     key={selectedNumber}
                     url={videos[selectedNumber]}
@@ -70,10 +87,9 @@ const CircleEle = () => {
                     light={images[selectedNumber]}
                     controls={true}
                     onEnded={onEndedPlay}
-                />}
-            </div>
-            <TextCircle />
-            {/* {(playedVideoCount < 9) && <div className={'slider ' + (isPressed ? 'pressed-mouse' : 'auto-scroll')} 
+                />
+            </div>}
+            {(playedVideoCount < 9) && <div className={'slider ' + (isPressed ? 'pressed-mouse' : 'auto-scroll')} 
                 onDoubleClick={onPressMouse} 
             >
                 {images.map((img, index) => (
@@ -85,7 +101,8 @@ const CircleEle = () => {
                         <img src={img} alt={img}/>
                     </span>
                 ))}
-            </div>} */}
+            </div>}
+            {(playedVideoCount>=9 && isLastVideoPlayed) && <TextCircle />}
         </div>  
 	);
 }
