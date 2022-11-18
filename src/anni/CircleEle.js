@@ -1,7 +1,8 @@
 import {React, useCallback, useState} from "react";
-import ReactPlayer from 'react-player/youtube'
+import ReactPlayer from 'react-player/youtube';
 
 import images from "./Images";
+import TextCircle from "./TextCircle";
 
 const videos = [
     'https://www.youtube.com/watch?v=oB2vlGfk5bE',
@@ -71,7 +72,8 @@ const CircleEle = () => {
                     onEnded={onEndedPlay}
                 />}
             </div>
-            {(playedVideoCount < 9) && <div className={'slider ' + (isPressed ? 'pressed-mouse' : 'auto-scroll')} 
+            <TextCircle />
+            {/* {(playedVideoCount < 9) && <div className={'slider ' + (isPressed ? 'pressed-mouse' : 'auto-scroll')} 
                 onDoubleClick={onPressMouse} 
             >
                 {images.map((img, index) => (
@@ -83,7 +85,7 @@ const CircleEle = () => {
                         <img src={img} alt={img}/>
                     </span>
                 ))}
-            </div>}
+            </div>} */}
         </div>  
 	);
 }
