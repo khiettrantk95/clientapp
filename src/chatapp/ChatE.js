@@ -10,7 +10,6 @@ import {
 } from "semantic-ui-react";
 import SweetAlert from "react-bootstrap-sweetalert";
 import { format } from "date-fns";
-import "./App.css";
 import UsersList from "./UsersList";
 import MessageBox from "./MessageBox";
 // Use for remote connections
